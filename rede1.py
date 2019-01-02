@@ -6,13 +6,20 @@ def sigmoid(input):
 def sigmoidDerivada(sig): # vai receber o retorno da funcao sigmoid (funcao Derivada)
     return sig * (1 - sig)
 
-entradas = np.array([[0,0],[0,1],[1,0],[1,1]]) # "xor" 0 xor 0, 0 xor 1 ...
+entradas = np.array([[0,0],
+                    [0,1],
+                    [1,0],
+                    [1,1]]) # "xor" 0 xor 0, 0 xor 1 ...
+
 saidas = np.array([[0],[1],[1],[0]]) #saida do xor 
-pesos0 = np.array([[-0.424, -0.740, -0.961], [0.358, 0.577, -0.469]])#3 pessoas pra casa entrada, no caso sao 2 entradas
-pesos1 = np.array([[-0.017], [-0.893], [-0.148]]) #3 pessoas da camada oculta pra camada de saida
+
+pesos0 = np.array([[-0.424, -0.740, -0.961],
+                    [0.358, -0.577, -0.469]])#3 pesos pra casa entrada, no caso sao 2 entradas
+
+pesos1 = np.array([[-0.017], [-0.893], [0.148]]) #3 pesos da camada oculta pra camada de saida
 
 epocas = 100 #quantas vezes vou executar (um loop de quantidade "epocas")
-taxaAprendizado = 0.3
+taxaAprendizagem = 0.3
 momento = 1
 
 for j in range(epocas):
@@ -39,12 +46,26 @@ for j in range(epocas):
      deltaCamadaOculta = deltaSaidaXPeso * sigmoidDerivada(camadaOculta)
      #>>>> recalculando os novos pesos (Backpropagation)
      #peso(n+1) = (peso(n)'pesoatual' * momento(defindo mas ainda nao explicado)) + (entrada * delta * taxaDeAprendizagem)
-     
+    
      #fazer transposta de CamadaOculta para ser possivel o prod linear
      camadaOcultaTransposta = camadaOculta.T
      #calculando valor auxiliar para calculo do peso novo (por Back propagation)
      pesosNovo1 = camadaOcultaTransposta.dot(deltaSaida) 
-     pesos1 = (pesos1) + ()
+     pesos1 = (pesos1 * momento) + (pesosNovo1 * taxaAprendizagem)
+
+     camadaDeEntradaTransposta = camadaEntrada.T
+     pesosNovo0 = camadaDeEntradaTransposta.dot(deltaCamadaOculta)
+     pesos0 = (pesos0 * momento) + (pesosNovo0 * taxaAprendizagem)
+
+print("---------------------")
+print(entradas)
+print("---------------------")
+print(camadaDeEntradaTransposta)
+print("---------------------")
 print(camadaOculta)
 print("---------------------")
 print(camadaOcultaTransposta)
+print("---------------------")
+print(camadaSaida)
+print("---------------------")
+print(pesosNovo0)
