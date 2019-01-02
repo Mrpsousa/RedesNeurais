@@ -1,5 +1,5 @@
 import numpy as np
-
+#rede de aprendizagem do XOR
 def sigmoid(input):
     return 1/(1 + np.exp(-input))
 
@@ -18,7 +18,7 @@ pesos0 = np.array([[-0.424, -0.740, -0.961],
 
 pesos1 = np.array([[-0.017], [-0.893], [0.148]]) #3 pesos da camada oculta pra camada de saida
 
-epocas = 100 #quantas vezes vou executar (um loop de quantidade "epocas")
+epocas = 100000 #quantas vezes vou executar (um loop de quantidade "epocas")
 taxaAprendizagem = 0.3
 momento = 1
 
@@ -32,6 +32,8 @@ for j in range(epocas):
 
      erroCamadaSaida = saidas - camadaSaida #"saidas" sao as saidas esperadas, "camadaSaida" eh a calculada com sigmoide 
      mediaAbs = np.mean(np.abs(erroCamadaSaida))
+     #para saber se o erro esta diminuindo (mostra o percentual de erro)
+     print("Erro: " + str(mediaAbs))
 
      derivadaSaida = sigmoidDerivada(camadaSaida)
      deltaSaida = erroCamadaSaida * derivadaSaida # delta = valor pra ajudar a calcular o gradiente
@@ -57,15 +59,17 @@ for j in range(epocas):
      pesosNovo0 = camadaDeEntradaTransposta.dot(deltaCamadaOculta)
      pesos0 = (pesos0 * momento) + (pesosNovo0 * taxaAprendizagem)
 
+#print("---------------------")
+#print(entradas)
+#print("---------------------")
+#print(camadaDeEntradaTransposta)
+#print("---------------------")
+#print(camadaOculta)
+#print("---------------------")
+#print(camadaOcultaTransposta)
+#print("---------------------")
+#print(camadaSaida)
 print("---------------------")
-print(entradas)
-print("---------------------")
-print(camadaDeEntradaTransposta)
-print("---------------------")
-print(camadaOculta)
-print("---------------------")
-print(camadaOcultaTransposta)
-print("---------------------")
-print(camadaSaida)
+print(pesosNovo1)
 print("---------------------")
 print(pesosNovo0)
