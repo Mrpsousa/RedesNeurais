@@ -13,13 +13,16 @@ entradas = np.array([[0,0],
 
 saidas = np.array([[0],[1],[1],[0]]) #saida do xor 
 
-pesos0 = np.array([[-0.424, -0.740, -0.961],
-                    [0.358, -0.577, -0.469]])#3 pesos pra casa entrada, no caso sao 2 entradas
+#pesos0 = np.array([[-0.424, -0.740, -0.961],
+#                   [0.358, -0.577, -0.469]])#3 pesos pra casa entrada, no caso sao 2 entradas
 
-pesos1 = np.array([[-0.017], [-0.893], [0.148]]) #3 pesos da camada oculta pra camada de saida
+#pesos1 = np.array([[-0.017], [-0.893], [0.148]]) #3 pesos da camada oculta pra camada de saida
 
-epocas = 100000 #quantas vezes vou executar (um loop de quantidade "epocas")
-taxaAprendizagem = 0.3
+pesos0 = 2 * np.random.random((2,3)) -1 #2 linha, 3 coluna - pq sao 2 neuronios na camada de entrada e 3 na camada escondida
+pesos1 = 2 * np.random.random((3,1)) -1 #3 reuronios na camada oculta e 1 neuronio de saida
+
+epocas = 5000 #quantas vezes vou executar (um loop de quantidade "epocas")
+taxaAprendizagem = 0.6
 momento = 1
 
 for j in range(epocas):
@@ -59,6 +62,10 @@ for j in range(epocas):
      pesosNovo0 = camadaDeEntradaTransposta.dot(deltaCamadaOculta)
      pesos0 = (pesos0 * momento) + (pesosNovo0 * taxaAprendizagem)
 
+#Os pesos finais da rede neural, que é o foi aprendido, esses pesos podem ser usados para criação
+#de soluções
+
+
 #print("---------------------")
 #print(entradas)
 #print("---------------------")
@@ -70,6 +77,8 @@ for j in range(epocas):
 #print("---------------------")
 #print(camadaSaida)
 print("---------------------")
-print(pesosNovo1)
+print(pesos1)
 print("---------------------")
-print(pesosNovo0)
+print(pesos0)
+print("---------------------")
+print(camadaSaida)
