@@ -1,4 +1,6 @@
 import numpy as np
+from sklearn import datasets
+
 
 def sigmoid(input):
     return 1/(1 + np.exp(-input))
@@ -6,17 +8,14 @@ def sigmoid(input):
 def sigmoidDerivada(sig): 
     return sig * (1 - sig)
 
-entradas = np.array([[0,0],
-                    [0,1],
-                    [1,0],
-                    [1,1]]) 
-
-saidas = np.array([[0],[1],[1],[0]]) 
+base = datasets.load_breast_cancer()
+entradas = base.data
+valoresSaidas =  base.target
 
 pesos0 = 2 * np.random.random((2,3)) -1 
 pesos1 = 2 * np.random.random((3,1)) -1 
 
-epocas = 500
+epocas = 1
 taxaAprendizagem = 0.6
 momento = 1
 
@@ -39,12 +38,9 @@ for j in range(epocas):
 
      deltaSaidaXPeso = deltaSaida.dot(pesos1Transposta)
      deltaCamadaOculta = deltaSaidaXPeso * sigmoidDerivada(camadaOculta)
-
-
     
 
      camadaOcultaTransposta = camadaOculta.T
-
      pesosNovo1 = camadaOcultaTransposta.dot(deltaSaida) 
      pesos1 = (pesos1 * momento) + (pesosNovo1 * taxaAprendizagem)
 
