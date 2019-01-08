@@ -4,6 +4,7 @@ Created on Sun Jan  6 16:33:11 2019
 @author: roger
 """
 import tensorflow as tf
+#import numpy as np
 
 valor1 = tf.constant(2)
 valor2 = tf.constant(3)
@@ -19,8 +20,8 @@ print(soma1)
 #até o momento não temos execução dos cods
 
 #para a exuceção de cod, usamos uma "Session" 
-with tf.Session() as sess:
-    a = sess.run(soma1)
+with tf.Session() as s:
+    a = s.run(soma1)
 print("Valor da Soma: ", a)
 
 text1 = tf.constant('texto 1')
@@ -35,9 +36,9 @@ valor = tf.constant(15, name = 'valor')
 soma = tf.Variable(valor + 5, name = 'soma')
 
 init = tf.initialize_all_variables() #inicializar as variáveis
-with tf.Session() as sess:
-    sess.run(init)
-    s = sess.run(soma)
+with tf.Session() as s:
+    s.run(init)
+    s = s.run(soma)
 print("Soma2: ", s)
 
 
@@ -48,17 +49,80 @@ vetor = tf.constant([1, 5, 10], name = 'vetor')
 soma3 = tf.Variable(vetor + 5, name = "soma3")
 print(vetor)
 init2 = tf.initialize_all_variables() #inicializar as variáveis
-with tf.Session() as ss:
-    ss.run(init2)
-    print("Soma3: ", ss.run(soma3))
+with tf.Session() as s:
+    s.run(init2)
+    print("Soma3: ", s.run(soma3))
 
 #'for'
 print("--------------------------------------")
 
 val = tf.Variable(0, name = "val")
 init3 = tf.initialize_all_variables()
-with tf.Session() as sss:
-    sss.run(init3)
+with tf.Session() as s:
+    s.run(init3)
     for i in range(5):
         val = val + 1
-        print(sss.run(val))
+        print(s.run(val))
+
+
+#soma vetor
+print("--------------------------------------")
+
+vetA = tf.constant([1,1,1], name = "vetorA")
+vetB = tf.constant([2,2,2], name = "vetorB")
+soma4 = tf.Variable(vetA + vetB, name = "soma4")
+
+init4 = tf.initialize_all_variables()
+with tf.Session() as s:
+    s.run(init4)
+    print("Soma de vetores: ", s.run(soma4))
+
+#soma matriz
+print("--------------------------------------")
+
+matzA = tf.constant([[1,1,1], [2,2,2]], name = "matrizA")
+matzB = tf.constant([[3,3,3], [1,1,1]], name = "matrizB")
+
+#pode ser feito asim
+soma5 = tf.Variable(matzA + matzB, name = "soma5")
+
+init5 = tf.initialize_all_variables()
+with tf.Session() as s:
+    s.run(init5)
+    print("Soma de Matrizes: ", s.run(soma5))
+
+ #ou assim
+soma6 = tf.add(matzA, matzB)
+with tf.Session() as s:
+    print("\n Soma de Matrizes2: ", s.run(soma6))
+
+
+print("---------------------------------------")
+matzA2 = tf.constant([[2], [3]], name = "matrizA2")
+matzB2 = tf.constant([[3,3,3], [1,1,1]], name = "matrizB2")
+
+soma7 = tf.add(matzA2, matzB2)
+with tf.Session() as s:
+    print("\n Soma de Matrizes3: ", s.run(soma7))
+
+#multiplicação matriz
+print("--------------------------------------")
+
+matzA2 = tf.constant([[1,2], [3,4]])
+matzB2 = tf.constant([[-1,3], [4,2]])
+multMatz = tf.matmul(matzA2, matzB2)
+
+with tf.Session() as s:
+    print("\n Multi Matrizes3: ", s.run(multMatz))
+
+#produto escalar (dot product)
+print("--------------------------------------")
+
+
+matzA3 = tf.constant([[-1.0, 7.0, 5.0]])
+matzB3 = tf.constant([[0.8, 0.1, 0.0]])
+multiplicaMatz = tf.multiply(matzA2, matzB2) #multiplico linearmente
+somaD = tf.reduce_sum(multiplicaMatz) # soma o resultado das multiplicações
+
+with tf.Session() as s:
+    print("valor do Dot Product: ", s.run(somaD))
