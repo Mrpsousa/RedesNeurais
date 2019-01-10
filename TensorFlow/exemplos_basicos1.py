@@ -121,8 +121,29 @@ print("--------------------------------------")
 
 matzA3 = tf.constant([[-1.0, 7.0, 5.0]])
 matzB3 = tf.constant([[0.8, 0.1, 0.0]])
-multiplicaMatz = tf.multiply(matzA2, matzB2) #multiplico linearmente
+"""multiplicaMatz = tf.multiply(matzA2, matzB2) #multiplico linearmente
 somaD = tf.reduce_sum(multiplicaMatz) # soma o resultado das multiplicações
 
 with tf.Session() as s:
     print("valor do Dot Product: ", s.run(somaD))
+"""
+
+#placeholders - um tipo de "variável" aonde se pode atribuir dados
+#os dados só são atribuidos "mais tarde"
+print("\nplaceholders\n")
+print("--------------------------------------")
+p1 = tf.placeholder('float', None)#'float' = tipo do dado que recebe, none = sem dimensão
+operacao = p1 + 2
+
+with tf.Session() as s:
+    resul = s.run(operacao, feed_dict = {p1: [1,2,3]}) #feed_dict passa um dicionário com os paramentros de alimentação do placeholder
+    print("Resultado (placeholder1)", resul)
+
+
+p2 = tf.placeholder('float', [None, 3])#'float' = tipo do dado que recebe, Matrix, none = não sei quantas linhas, 3 colunas
+operacao2 = p2 * 3
+
+with tf.Session() as s:
+    dados = [[1,2,3], [1,2,3]]
+    resul2 = s.run(operacao2, feed_dict = {p2: dados}) #feed_dict passa um dicionário com os paramentros de alimentação do placeholder
+    print("Resultado (placeholder2)", resul2)
