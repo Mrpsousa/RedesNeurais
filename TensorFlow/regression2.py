@@ -1,4 +1,5 @@
 # using simlpe linear regression  (only with  X, Y)
+# network to predict the price of the houses
 import pandas as pd   
 base = pd.read_csv('house-prices.csv')
 import tensorflow as tf 
@@ -42,4 +43,36 @@ b0 = tf.Variable(0.41)
 b1 = tf.Variable(0.72)
 
 #creating a placeholder, to receiver data of variables Y and X
-xph = tf.placeholder(tf.float32, [21613, 1]) # tf.float32 type of date, [a,b]   
+#the placeholders will receiver data in  processing time
+batch_size = 32 # the registers will go in parts of 32
+xph = tf.placeholder(tf.float32, [batch_size, 1]) # tf.float32 type of date, [a,b] tamanho do registro
+yph = tf.placeholder(tf.float32, [batch_size, 1]) # [batch_size, b] batch_size = rows, b columns in this case
+
+#creation of model that will representate our predictions 
+y_model = b0 + b1 * xph # feeding the formula with data pieces of 32 
+error = tf.losses.mean_squared_error(yph, y_model)# compare the answer of y_model with correct values of y
+optimizer = tf.train.GradientDescentOptimizer(learning_rate = 0.001) # training using gradient descent
+training = optimizer.minimize(error) # to do a minimizer of variable "error", minimizing the error
+init = tf.global_variables_initializer()
+
+
+#begin the execution
+with tf.Session() as sess: #here is the process of training
+    sess.run(init)
+    for i in range(10000):
+        indices = np.random.randint(len(x), size = batch_size)#here, need to make a draw of the indices(indices in range every 32)
+        feed = {xph: x[indices], yph: y[indices]}#now, filling in the placeholders, every 32("of 32 in 32"), here in indices, we get a list of 32 indices
+        #in xph = values in square meters | yph = valures os houses
+        sess.run(training, feed_dict = feed)#here, the true trainning 
+    b0_final, b1_final = sess.run([b0, b1]) # put final values on others variables, the values updated 
+
+    '''print("Final Values \n")
+       print("b0 = ", b0_final)
+       print("\nb1 = ", b1_final)'''
+    
+
+#print(np.random.randint(len(x), size = batch_size)) #to look at the 32 registers that were selected
+
+previsions = b0_final + b1_final * x # doing the previsions of houses, with base in values of meters
+
+print("Previões dos valores com base na 'metragem' ", previsions)
