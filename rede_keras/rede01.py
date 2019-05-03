@@ -29,6 +29,7 @@ def get_data():
     
     return train , test
 
+
 def get_combined_data():
   #reading train data
   train , test = get_data()
@@ -40,6 +41,7 @@ def get_combined_data():
   combined.reset_index(inplace=True)
   #combined.drop(['index', 'Id'], inplace=True, axis=1)
   return combined, target
+
 
 #Load train and test data into pandas DataFrames
 train_data, test_data = get_data()
@@ -120,12 +122,12 @@ Use ‘linear ’as the activation function for the output layer'''
 NN_model = Sequential()
 
 # The Input Layer :
-NN_model.add(Dense(128, kernel_initializer='normal',input_dim = train.shape[1], activation='relu'))
+NN_model.add(Dense(20, kernel_initializer='normal',input_dim = train.shape[1], activation='relu'))
 
 # The Hidden Layers :
-NN_model.add(Dense(256, kernel_initializer='normal',activation='relu'))
-NN_model.add(Dense(256, kernel_initializer='normal',activation='relu'))
-NN_model.add(Dense(256, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(36, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(36, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(36, kernel_initializer='normal',activation='relu'))
 
 # The Output Layer :
 NN_model.add(Dense(1, kernel_initializer='normal',activation='linear'))
@@ -140,4 +142,17 @@ checkpoint = ModelCheckpoint(checkpoint_name, monitor='val_loss', verbose = 1, s
 callbacks_list = [checkpoint]
 
 #Train the model
-#NN_model.fit(train, target, epochs=500, batch_size=1, validation_split = 0.2, callbacks=callbacks_list)
+NN_model.fit(train, target, epochs=200, batch_size=1, validation_split = 0.2, callbacks=callbacks_list)
+
+# Load wights file of the best model :
+wights_file = 'Weights-OK-15.82156.hdf5' # choose the best checkpoint 
+NN_model.load_weights(wights_file) # load it
+NN_model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mean_absolute_error'])
+
+def make_submission(prediction, sub_name):
+  my_submission = pd.DataFrame({'Id_predicao':pd.read_csv('test-cacau.csv').Id,'Producao':prediction})
+  my_submission.to_csv('{}.csv'.format(sub_name),index=False)
+  print('A submission file has been made')
+
+predictions = NN_model.predict(test)
+make_submission(predictions[:,0],'submission(NN).csv')
