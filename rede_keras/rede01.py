@@ -102,8 +102,8 @@ plt.show()'''
 
 def split_combined():
     global combined
-    train = combined[:9]
-    test = combined[9:]
+    train = combined[:8]
+    test = combined[8:]
 
     return train , test 
   
@@ -143,11 +143,10 @@ checkpoint = ModelCheckpoint(checkpoint_name, monitor='val_loss', verbose = 1, s
 callbacks_list = [checkpoint]
 
 #Train the model
-NN_model.fit(train, target, epochs=350, batch_size=1, validation_split = 0.2, callbacks=callbacks_list)
-
+NN_model.fit(train, target, epochs=300, batch_size=2, validation_split = 0.2, callbacks=callbacks_list)
 
 # Load wights file of the best model :
-wights_file = 'Weights_14.6.hdf5' # choose the best checkpoint 
+wights_file = 'Weights-300--2.93805.hdf5' # choose the best checkpoint 
 NN_model.load_weights(wights_file) # load it
 NN_model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mean_absolute_error'])
 
