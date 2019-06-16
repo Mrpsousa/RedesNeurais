@@ -18,12 +18,12 @@ from xgboost import XGBRegressor
 
 def get_data():
     #get train data
-    train_data_path ='train-cacau.csv'
+    train_data_path ='train.csv'
     train = pd.read_csv(train_data_path)
     uniques = train[0:1]
 
     #get test data
-    test_data_path ='test-cacau.csv'
+    test_data_path ='test.csv'
     test = pd.read_csv(test_data_path)
     #uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'])
     
@@ -102,8 +102,8 @@ plt.show()'''
 
 def split_combined():
     global combined
-    train = combined[:8]
-    test = combined[8:]
+    train = combined[:88]
+    test = combined[88:]
 
     return train , test 
   
@@ -122,12 +122,13 @@ Use ‘linear ’as the activation function for the output layer'''
 NN_model = Sequential()
 
 # The Input Layer :
-NN_model.add(Dense(20, kernel_initializer='normal',input_dim = train.shape[1], activation='relu'))
+NN_model.add(Dense(15, kernel_initializer='normal',input_dim = train.shape[1], activation='relu'))
 
 # The Hidden Layers :
-NN_model.add(Dense(40, kernel_initializer='normal',activation='relu'))
-NN_model.add(Dense(40, kernel_initializer='normal',activation='relu'))
-NN_model.add(Dense(40, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(30, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(30, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(30, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(30, kernel_initializer='normal',activation='relu'))
 
 # The Output Layer :
 NN_model.add(Dense(1, kernel_initializer='normal',activation='linear'))
@@ -143,17 +144,17 @@ checkpoint = ModelCheckpoint(checkpoint_name, monitor='val_loss', verbose = 1, s
 callbacks_list = [checkpoint]
 
 #Train the model
-NN_model.fit(train, target, epochs=300, batch_size=2, validation_split = 0.2, callbacks=callbacks_list)
+NN_model.fit(train, target, epochs=800, batch_size=3, validation_split = 0.2, callbacks=callbacks_list)
 
 # Load wights file of the best model :
-wights_file = 'Weights-300--2.93805.hdf5' # choose the best checkpoint 
+wights_file = 'Weights-343--847.30898.hdf5' # choose the best checkpoint 
 NN_model.load_weights(wights_file) # load it
 NN_model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mean_absolute_error'])
 
 def make_submission(prediction, sub_name):
-  my_submission = pd.DataFrame({'Id_predicao':pd.read_csv('test-cacau.csv').Id,'Producao':prediction})
+  my_submission = pd.DataFrame({'Id':pd.read_csv('test.csv').Id,'Producao':prediction})
   my_submission.to_csv('{}.csv'.format(sub_name),index=False)
   print('A submission file has been made')
 
 predictions = NN_model.predict(test)
-make_submission(predictions[:,0],'Prediction result.csv')
+make_submission(predictions[:,0],'Prediction result.txt')
