@@ -1,10 +1,4 @@
-from keras.callbacks import ModelCheckpoint
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error 
-from matplotlib import pyplot as plt
+rom matplotlib import pyplot as plt
 import seaborn as sb
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -128,6 +122,7 @@ NN_model.add(Dense(6, kernel_initializer='normal',input_dim = train.shape[1], ac
 NN_model.add(Dense(12, kernel_initializer='normal',activation='relu'))
 NN_model.add(Dense(12, kernel_initializer='normal',activation='relu'))
 NN_model.add(Dense(12, kernel_initializer='normal',activation='relu'))
+
 # The Output Layer :
 NN_model.add(Dense(1, kernel_initializer='normal',activation='linear'))
 
@@ -142,10 +137,10 @@ checkpoint = ModelCheckpoint(checkpoint_name, monitor='val_loss', verbose = 1, s
 callbacks_list = [checkpoint]
 
 #Train the model
-NN_model.fit(train, target, epochs=1300, batch_size=3, validation_split = 0.2, callbacks=callbacks_list)
+NN_model.fit(train, target, epochs=1500, batch_size=3, validation_split = 0.2, callbacks=callbacks_list)
 
 # Load wights file of the best model :
-wights_file = 'Weights-1278--740.97716.hdf5' # choose the best checkpoint 
+wights_file = 'Weights-1353--739.24282.hdf5' # choose the best checkpoint 
 NN_model.load_weights(wights_file) # load it
 NN_model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mean_absolute_error'])
 
