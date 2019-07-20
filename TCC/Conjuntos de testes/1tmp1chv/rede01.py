@@ -1,10 +1,4 @@
-from keras.callbacks import ModelCheckpoint
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error 
-from matplotlib import pyplot as plt
+rom matplotlib import pyplot as plt
 import seaborn as sb
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -13,6 +7,7 @@ import warnings
 warnings.filterwarnings('ignore')
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 from xgboost import XGBRegressor
+
 
 
 def get_data():
@@ -121,12 +116,12 @@ Use ‘linear ’as the activation function for the output layer'''
 NN_model = Sequential()
 
 # The Input Layer :
-NN_model.add(Dense(6, kernel_initializer='normal',input_dim = train.shape[1], activation='sigmoid'))
+NN_model.add(Dense(6, kernel_initializer='normal',input_dim = train.shape[1], activation='relu'))
 
 # The Hidden Layers :
-NN_model.add(Dense(12, kernel_initializer='normal',activation='sigmoid'))
-NN_model.add(Dense(12, kernel_initializer='normal',activation='sigmoid'))
-NN_model.add(Dense(12, kernel_initializer='normal',activation='sigmoid'))
+NN_model.add(Dense(12, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(12, kernel_initializer='normal',activation='relu'))
+NN_model.add(Dense(12, kernel_initializer='normal',activation='relu'))
 
 # The Output Layer :
 NN_model.add(Dense(1, kernel_initializer='normal',activation='linear'))
