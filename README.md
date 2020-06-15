@@ -1,2 +1,3 @@
 # RedesNeurais
-Redes Neurais Básico
+Redes Neurais - Projeto TCC
+
